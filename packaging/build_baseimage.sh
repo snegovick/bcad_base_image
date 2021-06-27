@@ -131,7 +131,95 @@ if [ ${MINICONDA} -eq 1 ]; then
     else
         echo "Modules are already moved into python3.8 path"
     fi
+
+    cp -pr ${APPDIR_T} ${APPDIR}
+
+        pushd ${APPDIR}
+
+    echo "Clean up image"
+    
+    # rm -f bin
+    # rm -rf boot
+    # rm -rf etc
+    # rm -f dev
+    rm -rf ezdxf
+    # rm -f lib32
+    # #rm -f lib64
+    # rm -rf media
+    # rm -rf mnt
+    rm -rf occ_build
+    rm -rf opencascade-7.4.0
+    rm opencascade-7.4.0.tgz
+    # rm -rf opt
+    # rm -f proc
+    rm -rf pyocc_build
+    rm -rf pythonocc-core
+    rm  ${MINICONDA_PKG}
+    # rm -rf run
+    # rm -f sbin
+    # rm -rf srv
+    # rm -rf sys
+    # rm -rf tmp
+    # rm -rf var
+    # rm -rf home
+    # rm -f libx32
+
+    pushd usr/bin
+    find . ! -name python3.8 ! -name bcad-launcher -maxdepth 1 -type f -delete
+    popd
+
+    ACTUALLY_RM=0
+
+    # pushd usr/lib/x86_64-linux-gnu
+    # if [ -e ${ROOTDIR}/packaging/keep.list ]; then
+    #     for i in *; do
+    #         if ! grep -qxFe "$i" ${ROOTDIR}/packaging/keep.list; then
+    #             if [ ${ACTUALLY_RM} -eq 1 ]; then
+    #                 echo "Deleting: $i"
+    #                 rm -rf "$i"
+    #             else
+    #                 echo "Pretending to delete $i"
+    #             fi
+    #         fi
+    #     done
+    # else
+    #     echo "Error: ${ROOTDIR}/packaging/keep.list is missing"
+    #     exit 1
+    # fi
+    # popd
+
+    ACTUALLY_RM=1
+    pushd usr/lib
+    if [ -e ${ROOTDIR}/packaging/keep.list ]; then
+        for i in *; do
+            if ! grep -qxFe "$i" ${ROOTDIR}/packaging/keep.list; then
+                if [ ${ACTUALLY_RM} -eq 1 ]; then
+                    echo "Deleting: $i"
+                    rm -rf "$i"
+                else
+                    echo "Pretending to delete $i"
+                fi
+            fi
+        done
+    else
+        echo "Error: ${ROOTDIR}/packaging/keep.list is missing"
+        exit 1
+    fi
+    popd
+
+
+    rm -rf usr/compiler_compat
+    rm -rf usr/conda-meta
+    rm -rf usr/condabin
+    rm -rf usr/envs
+    rm -rf usr/etc
+    rm -rf usr/include
+    rm -rf usr/pkgs
+    rm -rf usr/share
+    rm -rf usr/shell
+    rm -rf usr/ssl
+    mv usr/LICENSE.txt usr/CONDA_LICENSE.txt
 fi
 
-tar cf ${APPDIR_T}.tar ${APPDIR_T}
-xz ${APPDIR_T}.tar
+tar cvf ${APPDIR}.tar ${APPDIR}
+xz ${APPDIR}.tar

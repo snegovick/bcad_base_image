@@ -5,7 +5,18 @@ name: default
 steps:
 - name: build
   image: ubuntu:focal-20210609
+  environment:
+    SCP_USER:
+      from_secret: scp_username
+    SCP_PWD:
+      from_secret: scp_pwd
   commands:
   - apt-get update
   - DEBIAN_FRONTEND=noninteractive apt-get install -yq build-essential git wget curl cmake libfreetype-dev libtbb-dev libfreeimage-dev libvtk6-dev flex bison rapidjson-dev tcl-dev tk-dev doxygen graphviz libxmu-dev libxi-dev swig
   - make build-baseimage
+  - CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  - BRANCH=""; if [ "${CURRENT_BRANCH}" != "master" ]; then BRANCH="${CURRENT_BRANCH}_"; fi
+  - VERSION=$(git describe --tags)
+  - echo "Uploading version ${VERSION}"
+  - GIT_TAG=$(git describe --tags --no-abbrev)
+  - curl --insecure --user ${SCP_USER}:${SCP_PWD} -T ${APPDIR}.tar.xz sftp://10.218.35.100/srv/deb-repositories/archive/drone/bcad_base_image/${BRANCH}${APPDIR}-${VERSION}.tar.xz
