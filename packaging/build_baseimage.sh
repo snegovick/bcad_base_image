@@ -168,26 +168,6 @@ if [ ${MINICONDA} -eq 1 ]; then
     find . ! -name python3.8 ! -name bcad-launcher -maxdepth 1 -type f -delete
     popd
 
-    ACTUALLY_RM=0
-
-    # pushd usr/lib/x86_64-linux-gnu
-    # if [ -e ${ROOTDIR}/packaging/keep.list ]; then
-    #     for i in *; do
-    #         if ! grep -qxFe "$i" ${ROOTDIR}/packaging/keep.list; then
-    #             if [ ${ACTUALLY_RM} -eq 1 ]; then
-    #                 echo "Deleting: $i"
-    #                 rm -rf "$i"
-    #             else
-    #                 echo "Pretending to delete $i"
-    #             fi
-    #         fi
-    #     done
-    # else
-    #     echo "Error: ${ROOTDIR}/packaging/keep.list is missing"
-    #     exit 1
-    # fi
-    # popd
-
     ACTUALLY_RM=1
     pushd usr/lib
     if [ -e ${ROOTDIR}/packaging/keep.list ]; then
