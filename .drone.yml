@@ -18,5 +18,6 @@ steps:
   - BRANCH=""; if [ "${CURRENT_BRANCH}" != "master" ]; then BRANCH="${CURRENT_BRANCH}_"; fi
   - VERSION=$(git describe --tags)
   - echo "Uploading version ${VERSION}"
-  - GIT_TAG=$(git describe --tags --no-abbrev)
-  - curl --insecure --user ${SCP_USER}:${SCP_PWD} -T ${APPDIR}.tar.xz sftp://10.218.35.100/srv/deb-repositories/archive/drone/bcad_base_image/${BRANCH}${APPDIR}-${VERSION}.tar.xz
+  - |
+    GIT_TAG=$(git describe --tags --no-abbrev)
+    curl --insecure --user ${SCP_USER}:${SCP_PWD} -T ${APPDIR}.tar.xz sftp://10.218.35.100/srv/deb-repositories/archive/drone/bcad_base_image/${BRANCH}${APPDIR}-${VERSION}.tar.xz
