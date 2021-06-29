@@ -201,5 +201,4 @@ if [ ${MINICONDA} -eq 1 ]; then
     mv usr/LICENSE.txt usr/CONDA_LICENSE.txt
 fi
 
-tar cvf ${APPDIR}.tar ${APPDIR}
-xz ${APPDIR}.tar
+tar -czf - ${APPDIR} | (pv -p --timer --rate --bytes > ${APPDIR}.tar.gz)
