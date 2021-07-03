@@ -15,8 +15,8 @@ steps:
   - DEBIAN_FRONTEND=noninteractive apt-get install -yq build-essential git wget curl
   - git fetch --tags
   - mkdir ~/.ssh
-  - echo ${SCP_ID} | cat > ~/.ssh/id_rsa
-  - echo ${SCP_PUB} | cat > ~/.ssh/id_rsa.pub
+  - echo "${SCP_ID}" | cat > ~/.ssh/id_rsa
+  - echo "${SCP_PUB}" | cat > ~/.ssh/id_rsa.pub
   - chmod go-rwx ~/.ssh -R
   - mkdir bcad.AppDir; touch bcad.AppDir/empty; tar czf bcad.AppDir.tar.gz bcad.AppDir; #make build-baseimage
   - CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
