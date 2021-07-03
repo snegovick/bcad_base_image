@@ -6,17 +6,17 @@ steps:
 - name: build
   image: ubuntu:focal-20210609
   environment:
-    SCP_USER:
-      from_secret: scp_username
-    SCP_PWD:
-      from_secret: scp_pwd
+    SCP_ID:
+      from_secret: id
+    SCP_PUB:
+      from_secret: pub
   commands:
   - apt-get update
   - DEBIAN_FRONTEND=noninteractive apt-get install -yq build-essential git wget curl
   - git fetch --tags
   - mkdir ~/.ssh
-  - echo ${id} | cat > ~/.ssh/id_rsa
-  - echo ${pub} | cat > ~/.ssh/id_rsa.pub
+  - echo ${SCP_ID} | cat > ~/.ssh/id_rsa
+  - echo ${SCP_PUB} | cat > ~/.ssh/id_rsa.pub
   - chmod go-rwx ~/.ssh -R
   - mkdir bcad.AppDir; touch bcad.AppDir/empty; tar czf bcad.AppDir.tar.gz bcad.AppDir; #make build-baseimage
   - CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
