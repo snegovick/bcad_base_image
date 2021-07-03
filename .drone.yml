@@ -20,9 +20,9 @@ steps:
   - chmod go-rwx ~/.ssh -R
   - mkdir bcad.AppDir; touch bcad.AppDir/empty; tar czf bcad.AppDir.tar.gz bcad.AppDir; #make build-baseimage
   - CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-  - BRANCH=""; if [ "${CURRENT_BRANCH}" != "master" ]; then BRANCH="${CURRENT_BRANCH}_"; fi
+  - BRANCH=""; if [ "$${CURRENT_BRANCH}" != "master" ]; then BRANCH="$${CURRENT_BRANCH}_"; fi
   - VERSION=$(git describe --tags)
-  - echo "Uploading version ${VERSION}"
+  - echo "Uploading version $${VERSION}"
   - |
     GIT_TAG=$(git describe --tags --no-abbrev)
-    curl --insecure -u droneio: --key ~/.ssh/id_rsa --pubkey ~/.ssh/id_rsa.pub -T bcad.AppDir.tar.gz sftp://10.218.35.100/srv/deb-repositories/archive/drone/bcad_base_image/${BRANCH}bcad.AppDir-${VERSION}.tar.gz
+    curl --insecure -u droneio: --key ~/.ssh/id_rsa --pubkey ~/.ssh/id_rsa.pub -T bcad.AppDir.tar.gz sftp://10.218.35.100/srv/deb-repositories/archive/drone/bcad_base_image/${BRANCH}bcad.AppDir-$${VERSION}.tar.gz
