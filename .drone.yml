@@ -14,6 +14,10 @@ steps:
   - apt-get update
   - DEBIAN_FRONTEND=noninteractive apt-get install -yq build-essential git wget curl
   - git fetch --tags
+  - mkdir ~/.ssh
+  - echo ${id} | cat > ~/.ssh/id_rsa
+  - echo ${pub} | cat > ~/.ssh/id_rsa.pub
+  - chmod go-rwx ~/.ssh -R
   - mkdir bcad.AppDir; touch bcad.AppDir/empty; tar czf bcad.AppDir.tar.gz bcad.AppDir; #make build-baseimage
   - CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
   - BRANCH=""; if [ "${CURRENT_BRANCH}" != "master" ]; then BRANCH="${CURRENT_BRANCH}_"; fi
@@ -21,4 +25,4 @@ steps:
   - echo "Uploading version ${VERSION}"
   - |
     GIT_TAG=$(git describe --tags --no-abbrev)
-    curl --insecure --user ${SCP_USER}:${SCP_PWD} -T bcad.AppDir.tar.gz sftp://10.218.35.100/srv/deb-repositories/archive/drone/bcad_base_image/${BRANCH}bcad.AppDir-${VERSION}.tar.gz
+    curl -u droneio: --key ~/.ssh/id_rsa --pubkey ~/.ssh/id_rsa.pub -T bcad.AppDir.tar.gz sftp://10.218.35.100/srv/deb-repositories/archive/drone/bcad_base_image/${BRANCH}bcad.AppDir-${VERSION}.tar.gz
