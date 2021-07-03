@@ -25,4 +25,4 @@ steps:
   - echo "Uploading version ${VERSION}"
   - |
     GIT_TAG=$(git describe --tags --no-abbrev)
-    curl -u droneio: --key ~/.ssh/id_rsa --pubkey ~/.ssh/id_rsa.pub -T bcad.AppDir.tar.gz sftp://10.218.35.100/srv/deb-repositories/archive/drone/bcad_base_image/${BRANCH}bcad.AppDir-${VERSION}.tar.gz
+    curl --insecure -u droneio: --key ~/.ssh/id_rsa --pubkey ~/.ssh/id_rsa.pub -T bcad.AppDir.tar.gz sftp://10.218.35.100/srv/deb-repositories/archive/drone/bcad_base_image/${BRANCH}bcad.AppDir-${VERSION}.tar.gz
